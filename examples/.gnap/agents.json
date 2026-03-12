@@ -8,13 +8,8 @@
       "runtime": "openclaw",
       "reports_to": null,
       "capabilities": ["research", "writing", "planning", "coding", "design"],
-      "heartbeat_sec": 1800,
-      "budget_monthly_usd": 200,
-      "status": "active",
-      "contact": {
-        "github": "ori-cofounder",
-        "telegram": "@FarolWorkspaceBot"
-      }
+      "heartbeat_sec": 300,
+      "status": "active"
     },
     {
       "id": "carl",
@@ -24,37 +19,22 @@
       "runtime": "openclaw",
       "reports_to": "ori",
       "capabilities": ["sales", "outreach", "analytics"],
-      "heartbeat_sec": 3600,
-      "budget_monthly_usd": 100,
-      "status": "active",
-      "contact": {
-        "telegram": "@cromoneybot"
-      }
+      "heartbeat_sec": 600,
+      "status": "active"
     },
     {
       "id": "leo",
       "name": "Leonid",
       "role": "CTO",
       "type": "human",
-      "reports_to": null,
-      "capabilities": ["infra", "coding", "devops"],
-      "status": "active",
-      "contact": {
-        "telegram": "@dinershtein1"
-      }
+      "status": "active"
     },
     {
       "id": "mayak",
       "name": "Alex",
       "role": "Chairman / Strategy",
       "type": "human",
-      "reports_to": null,
-      "capabilities": ["strategy", "sales", "design"],
-      "status": "active",
-      "contact": {
-        "telegram": "@mayak_01"
-      }
+      "status": "active"
     }
-  ],
-  "updated_at": "2026-03-12T10:00:00Z"
+  ]
 }
