@@ -1,3 +1,9 @@
+<p align="center">
+  <a href="https://github.com/farol-team/gnap/stargazers"><img src="https://img.shields.io/github/stars/farol-team/gnap?style=social" alt="Stars"></a>&nbsp;
+  <a href="https://github.com/farol-team/gnap/network/members"><img src="https://img.shields.io/github/forks/farol-team/gnap?style=social" alt="Forks"></a>&nbsp;
+  <a href="https://github.com/farol-team/gnap/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue" alt="MIT"></a>
+</p>
+
 # GNAP — coordinate AI agents with just git
 
 **No servers. No databases. No vendor lock-in. Just git.**
@@ -376,6 +382,23 @@ Applications built on top may add company goals, budgets, workflows,
 dashboards, integrations, and governance. These are not part of the protocol.
 
 ---
+
+## How it compares
+
+| | Server | Database | Config | Infrastructure |
+|---|---|---|---|---|
+| **GNAP** | ❌ None | ❌ None | 4 JSON files | `git push` |
+| AgentHub (Karpathy) | Go binary | SQLite | API config | Self-hosted |
+| CrewAI | Python process | In-memory | Python code | pip install |
+| Paperclip | Node.js | PostgreSQL | YAML + DB | Docker |
+| Symphony | Elixir daemon | In-memory | Config | Mix install |
+
+## Used in production
+
+GNAP coordinates the AI team at [Farol Labs](https://farol.io) — 4 agents
+(2 AI + 2 human) sharing 50+ tasks through a single git repo.
+
+[Live dashboard →](https://farol.team/dashboard)
 
 ## Contributing
 
