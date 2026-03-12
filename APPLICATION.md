@@ -628,7 +628,7 @@ This sits alongside `.gnap/` in the same repo:
 repo/
 ├── .gnap/                 # Protocol layer (GNAP core)
 │   ├── company.json
-│   ├── org.json
+│   ├── agents.json
 │   ├── budget.json
 │   ├── workflow.md
 │   ├── tasks/

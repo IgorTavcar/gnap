@@ -3,7 +3,7 @@
 **Minimal coordination protocol for AI agent teams, built on git.**
 
 ```
-Status:   Draft v3
+Status:   Draft v4
 Date:     March 2026
 Author:   Farol Labs (Leonid Dinershtein, Alexander Mayak, Ori)
 ```
@@ -56,6 +56,7 @@ application layer — not part of the protocol.
 ```
 repo/
   .gnap/
+    version              ← protocol version (e.g. "4")
     agents.json
     tasks/
       billing.json
@@ -68,6 +69,12 @@ repo/
   README.md          ← human-readable project context
   ...                ← any other files the team needs
 ```
+
+### Protocol Version
+
+The file `.gnap/version` contains the protocol version as a plain integer
+(e.g. `4`). Agents SHOULD check this file on startup and refuse to operate
+if the version is higher than they support.
 
 ---
 
@@ -112,9 +119,12 @@ An agent is a human or AI participant registered in `agents.json`.
 |-------|------|-------------|
 | `runtime` | string | `openclaw` / `codex` / `claude` / `custom` |
 | `reports_to` | string | Agent ID of manager. Creates org tree |
-| `heartbeat_sec` | integer | Poll interval in seconds |
+| `heartbeat_sec` | integer | Poll interval in seconds. Default: 300 (5 min) |
 | `contact` | object | Platform handles (telegram, email, etc.) |
 | `capabilities` | array | Free-form capability tags |
+
+**Reserved identifiers:** Agent ID `*` is reserved for broadcast addressing
+in messages and MUST NOT be used as an agent identifier.
 
 ---
 
@@ -152,6 +162,7 @@ A task is a unit of work. One JSON file per task in `tasks/`.
 
 | Field | Type | Description |
 |-------|------|-------------|
+| `parent` | string | Task ID of parent task (creates subtask hierarchy) |
 | `desc` | string | Longer description |
 | `priority` | integer | 0 = highest |
 | `due` | ISO 8601 | Deadline |
@@ -160,15 +171,18 @@ A task is a unit of work. One JSON file per task in `tasks/`.
 | `reviewer` | string | Agent ID who reviews |
 | `updated_at` | ISO 8601 | Last modified |
 | `tags` | array | Free-form labels |
+| `comments` | array | List of `{ by, at, text }` comment objects |
 
 ### Task States
 
 ```
 backlog → ready → in_progress → review → done
-                       ↓                   ↑
-                    blocked ───────────────→│
-                       ↓
-                    cancelled
+            ↑          ↑           │
+            │          └───────────┘  (reviewer rejects)
+            │
+         blocked → ready              (unblocked)
+            ↓
+         cancelled
 ```
 
 | State | Meaning |
@@ -177,9 +191,13 @@ backlog → ready → in_progress → review → done
 | `ready` | Prioritized, waiting for agent to pick up |
 | `in_progress` | Agent is working on it |
 | `review` | Work done, waiting for review |
-| `done` | Completed |
+| `done` | Completed (terminal) |
 | `blocked` | Cannot proceed (see `blocked_reason`) |
-| `cancelled` | Will not be done |
+| `cancelled` | Will not be done (terminal) |
+
+Reverse transitions:
+- `review → in_progress` — reviewer rejects, agent reworks
+- `blocked → ready` — unblocked, agent picks up again
 
 ---
 
@@ -197,7 +215,8 @@ agent (or another agent) can create a new run.
   "id": "billing-001",
   "task": "billing",
   "agent": "carl",
-  "status": "completed",
+  "state": "completed",
+  "attempt": 1,
   "started_at": "2026-03-12T12:30:00Z",
   "finished_at": "2026-03-12T12:35:00Z",
   "tokens": { "input": 12400, "output": 3200 },
@@ -213,19 +232,21 @@ agent (or another agent) can create a new run.
 | `id` | string | Unique identifier (matches filename) |
 | `task` | string | Task ID this run belongs to |
 | `agent` | string | Agent ID who executed |
-| `status` | enum | `running` \| `completed` \| `failed` \| `cancelled` |
+| `state` | enum | `running` \| `completed` \| `failed` \| `cancelled` |
 | `started_at` | ISO 8601 | When started |
 
 **Optional fields:**
 
 | Field | Type | Description |
 |-------|------|-------------|
+| `attempt` | integer | Attempt number (1-based) |
 | `finished_at` | ISO 8601 | When finished |
 | `tokens` | object | `{ input, output }` token counts |
 | `cost_usd` | number | Cost of this run |
 | `result` | string | Human-readable outcome |
 | `error` | string | Error message if failed |
 | `commits` | array | Git commit SHAs produced |
+| `artifacts` | array | Paths to files produced by this run |
 
 ### Why runs matter
 
@@ -261,7 +282,7 @@ in `messages/`.
 |-------|------|-------------|
 | `id` | string | Unique identifier |
 | `from` | string | Sender agent ID |
-| `to` | array | Recipient agent IDs. `["all"]` = broadcast |
+| `to` | array | Recipient agent IDs. `["*"]` = broadcast |
 | `at` | ISO 8601 | Timestamp (MUST be present) |
 | `text` | string | Message content |
 
@@ -270,6 +291,7 @@ in `messages/`.
 | Field | Type | Description |
 |-------|------|-------------|
 | `type` | string | `directive` \| `status` \| `request` \| `info` \| `alert` |
+| `channel` | string | Topic channel (e.g. `sales`, `infra`, `general`) |
 | `thread` | string | Message ID this replies to |
 | `read_by` | array | Agent IDs who have read this |
 
@@ -357,6 +379,7 @@ AgentHQ stores its data alongside GNAP entities:
 
 ```
 .gnap/
+  version              ← GNAP protocol
   agents.json          ← GNAP protocol
   tasks/               ← GNAP protocol
   runs/                ← GNAP protocol

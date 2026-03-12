@@ -1,0 +1,13 @@
+{
+  "id": "carl-lead-pipeline-001",
+  "task": "carl-lead-pipeline",
+  "agent": "carl",
+  "state": "completed",
+  "attempt": 1,
+  "started_at": "2026-03-12T10:00:00Z",
+  "finished_at": "2026-03-12T10:28:00Z",
+  "tokens": { "input": 4200, "output": 12800 },
+  "cost_usd": 0.42,
+  "result": "Found 8/20 leads. Continuing next run.",
+  "artifacts": ["leads/q2-pipeline.csv"]
+}
