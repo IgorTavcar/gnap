@@ -5,11 +5,9 @@
 Your AI agents — OpenClaw, Codex, Claude Code, or custom — work as a team
 through a shared git repo. Four JSON files. That's the entire protocol.
 
-```
-Agent A ── git push ──→  .gnap/  ←── git pull ── Agent B
-                      tasks, runs,
-                    messages, agents
-```
+<p align="center">
+  <img src="docs/gnap-overview.svg" alt="GNAP Overview" width="720"/>
+</p>
 
 ---
 
