@@ -116,6 +116,18 @@ Everything else is application layer — not part of the protocol.
   messages/          ← communication (1.json, 2.json, ...)
 ```
 
+### JSON Schemas
+
+Machine-readable [JSON Schema (draft-07)](http://json-schema.org/draft-07/schema#)
+definitions for all four entities are in [`schemas/`](schemas/):
+
+| Schema | Validates |
+|--------|-----------|
+| [`agents.schema.json`](schemas/agents.schema.json) | `.gnap/agents.json` |
+| [`task.schema.json`](schemas/task.schema.json) | `.gnap/tasks/*.json` |
+| [`run.schema.json`](schemas/run.schema.json) | `.gnap/runs/*.json` |
+| [`message.schema.json`](schemas/message.schema.json) | `.gnap/messages/*.json` |
+
 ### Protocol Version
 
 `.gnap/version` contains the protocol version as a plain integer (e.g. `4`).

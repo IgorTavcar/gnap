@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GNAP Message",
+  "description": "Communication between agents. One JSON file per message in .gnap/messages/{id}.json",
+  "type": "object",
+  "required": ["id", "from", "to", "at", "text"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique message identifier"
+    },
+    "from": {
+      "type": "string",
+      "description": "Sender agent ID (must exist in agents.json)"
+    },
+    "to": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1,
+      "description": "Recipient agent IDs. ['*'] = broadcast to all agents"
+    },
+    "at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp"
+    },
+    "text": {
+      "type": "string",
+      "description": "Message content"
+    },
+    "type": {
+      "type": "string",
+      "enum": ["directive", "status", "request", "info", "alert"],
+      "description": "Message category for routing/prioritization"
+    },
+    "channel": {
+      "type": "string",
+      "description": "Topic channel for grouping (e.g. 'sales', 'infra', 'general')"
+    },
+    "thread": {
+      "type": "string",
+      "description": "Message ID this replies to (for threading)"
+    },
+    "read_by": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": [],
+      "description": "Agent IDs who have read this message"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GNAP Run",
+  "description": "A single attempt to work on a task. One JSON file per run in .gnap/runs/{task-id}-{attempt}.json",
+  "type": "object",
+  "required": ["id", "task", "agent", "state", "started_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier (matches filename)"
+    },
+    "task": {
+      "type": "string",
+      "description": "Task ID this run belongs to"
+    },
+    "agent": {
+      "type": "string",
+      "description": "Agent ID who executed"
+    },
+    "state": {
+      "type": "string",
+      "enum": ["running", "completed", "failed", "cancelled"],
+      "description": "Run state"
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of when the run started"
+    },
+    "attempt": {
+      "type": "integer",
+      "minimum": 1,
+      "description": "Attempt number (1-based)"
+    },
+    "finished_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of when the run finished"
+    },
+    "tokens": {
+      "type": "object",
+      "properties": {
+        "input": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Input token count"
+        },
+        "output": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Output token count"
+        }
+      },
+      "additionalProperties": false,
+      "description": "Token usage counts"
+    },
+    "cost_usd": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Cost of this run in USD"
+    },
+    "result": {
+      "type": "string",
+      "description": "Human-readable outcome"
+    },
+    "error": {
+      "type": "string",
+      "description": "Error message if failed"
+    },
+    "commits": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Git commit SHAs produced"
+    },
+    "artifacts": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Paths to files produced by this run"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,101 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GNAP Task",
+  "description": "A unit of work. One JSON file per task in .gnap/tasks/{id}.json",
+  "type": "object",
+  "required": ["id", "title", "assigned_to", "state", "created_by", "created_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier (matches filename)"
+    },
+    "title": {
+      "type": "string",
+      "description": "What needs to be done"
+    },
+    "assigned_to": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Agent IDs responsible"
+    },
+    "state": {
+      "type": "string",
+      "enum": ["backlog", "ready", "in_progress", "review", "done", "blocked", "cancelled"],
+      "description": "Current task state"
+    },
+    "created_by": {
+      "type": "string",
+      "description": "Agent ID who created it"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of creation"
+    },
+    "parent": {
+      "type": "string",
+      "description": "Task ID of parent task (creates subtask hierarchy)"
+    },
+    "desc": {
+      "type": "string",
+      "description": "Longer description"
+    },
+    "priority": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Priority level. 0 = highest"
+    },
+    "due": {
+      "type": "string",
+      "format": "date",
+      "description": "Deadline (ISO 8601 date or date-time)"
+    },
+    "blocked": {
+      "type": "boolean",
+      "description": "Is this task blocked?"
+    },
+    "blocked_reason": {
+      "type": "string",
+      "description": "Why the task is blocked"
+    },
+    "reviewer": {
+      "type": "string",
+      "description": "Agent ID who reviews"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last modification"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Free-form labels"
+    },
+    "comments": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["by", "at", "text"],
+        "properties": {
+          "by": {
+            "type": "string",
+            "description": "Agent ID of commenter"
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp"
+          },
+          "text": {
+            "type": "string",
+            "description": "Comment content"
+          }
+        },
+        "additionalProperties": false
+      },
+      "description": "List of comment objects"
+    }
+  },
+  "additionalProperties": false
+}

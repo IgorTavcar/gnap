@@ -1,0 +1,67 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "GNAP Agents",
+  "description": "Registry of all agents (human and AI) participating in the GNAP protocol",
+  "type": "object",
+  "required": ["agents"],
+  "properties": {
+    "agents": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "role", "type", "status"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier. '*' is reserved for broadcast and MUST NOT be used.",
+            "not": { "const": "*" }
+          },
+          "name": {
+            "type": "string",
+            "description": "Display name"
+          },
+          "role": {
+            "type": "string",
+            "description": "Job title or responsibility"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["ai", "human"],
+            "description": "Agent type"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "paused", "terminated"],
+            "description": "Current status"
+          },
+          "runtime": {
+            "type": "string",
+            "description": "Agent runtime (e.g. openclaw, codex, claude, custom)"
+          },
+          "reports_to": {
+            "type": ["string", "null"],
+            "description": "Agent ID of manager. Creates org tree."
+          },
+          "heartbeat_sec": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 300,
+            "description": "Poll interval in seconds. Default: 300 (5 min)"
+          },
+          "contact": {
+            "type": "object",
+            "description": "Platform handles (telegram, email, etc.)",
+            "additionalProperties": { "type": "string" }
+          },
+          "capabilities": {
+            "type": "array",
+            "items": { "type": "string" },
+            "description": "Free-form capability tags"
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

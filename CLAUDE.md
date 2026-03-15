@@ -26,6 +26,7 @@ Git  (Transport)             — push/pull/commit = the message bus
 | `ONBOARDING.md` | Detailed step-by-step agent onboarding guide |
 | `CONTRIBUTING.md` | Contribution guidelines |
 | `examples/.gnap/` | Reference data: `agents.json`, `tasks/`, `runs/`, `messages/`, `version` |
+| `schemas/` | JSON Schema (draft-07) definitions for all four entities |
 | `docs/gnap-overview.svg` | Visual diagram embedded in README hero section |
 
 ## Core Protocol Concepts
